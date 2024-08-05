@@ -25,6 +25,7 @@ function App() {
           value={task}
           name='task'
           type='text'
+          text="enter"
           placeholder='Enter a task'
         />
         <button
