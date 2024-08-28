@@ -1,3 +1,34 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* App.css */
+.react-calendar {
+    background-color: #1f2937; /* Dark background */
+    color: #ffffff; /* White text */
+    border: none;
+    border-radius: 0.5rem;
+  }
+  
+  .react-calendar__tile {
+    background-color: #374151; /* Darker tile background */
+    color: #ffffff; /* White text */
+  }
+  
+  .react-calendar__tile--active {
+    background-color: #2563eb; /* Blue background for active tile */
+    color: #ffffff; /* White text */
+  }
+  
+  .react-calendar__tile--now {
+    background-color: #4b5563; /* Darker background for current day */
+    color: #ffffff; /* White text */
+  }
+  
+  .react-calendar__navigation button {
+    color: #ffffff; /* White text for navigation buttons */
+  }
+  
+  .react-calendar__month-view__days__day--weekend {
+    color: #f87171; /* Red text for weekends */
+  }

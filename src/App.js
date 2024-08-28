@@ -1,18 +1,28 @@
 import './App.css';
 import React, { useState } from "react";
 import { saveAs } from 'file-saver';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 
 function App() {
-  const [task, setTask] = useState(""); // bierzacy task 
-  const [taskList, setTaskList] = useState([]); // lista taskow 
+  const [task, setTask] = useState(""); // bieżący task 
+  const [taskList, setTaskList] = useState([]); // lista tasków 
+  const [selectedDate, setSelectedDate] = useState(new Date()); // wybrana data
+  const [tasksByDate, setTasksByDate] = useState({}); // zadania przypisane do dat
 
   const handletaskAdd = () => {
-    setTaskList([...taskList, task]);
+    const newTaskList = [...taskList, task];
+    setTaskList(newTaskList);
     setTask("");
+    const dateKey = selectedDate.toDateString();
+    const newTasksByDate = { ...tasksByDate, [dateKey]: [...(tasksByDate[dateKey] || []), task] };
+    setTasksByDate(newTasksByDate);
   }
 
-  const handledeltask = (index) => {
-    setTaskList(taskList.filter((task, i) => i !== index));
+  const handledeltask = (dateKey, index) => {
+    const newTasksByDate = { ...tasksByDate };
+    newTasksByDate[dateKey] = newTasksByDate[dateKey].filter((task, i) => i !== index);
+    setTasksByDate(newTasksByDate);
   };
 
   const handleSaveTasks = () => {
@@ -52,17 +62,29 @@ function App() {
           Add Task
         </button>
       </div>
+      <div className="flex mb-4">
+        <Calendar
+          onChange={setSelectedDate}
+          value={selectedDate}
+          className="bg-gray-800 text-white rounded"
+        />
+      </div>
       <ul className="w-full max-w-md">
-        {taskList.map((task, index) => (
-          <li key={index} className="flex justify-between items-center bg-gray-800 p-2 mb-2 rounded text-white">
-            <span>{task}</span>
-            <button
-              className="text-red-500 hover:text-red-700 focus:outline-none"
-              onClick={() => handledeltask(index)}
-            >
-              Delete
-            </button>
-          </li>
+        {Object.keys(tasksByDate).map(dateKey => (
+          <div key={dateKey}>
+            <h2 className="text-xl font-bold mb-2">{dateKey}</h2>
+            {tasksByDate[dateKey].map((task, index) => (
+              <li key={index} className="flex justify-between items-center bg-gray-800 p-2 mb-2 rounded text-white">
+                <span>{task}</span>
+                <button
+                  className="text-red-500 hover:text-red-700 focus:outline-none"
+                  onClick={() => handledeltask(dateKey, index)}
+                >
+                  Delete
+                </button>
+              </li>
+            ))}
+          </div>
         ))}
       </ul>
       <div className="flex mt-4 space-x-4">
