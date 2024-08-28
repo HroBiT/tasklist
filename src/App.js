@@ -53,6 +53,7 @@ function App() {
           value={task}
           name='task'
           type='text'
+          text="enter"
           placeholder='Enter a task'
         />
         <button
@@ -87,27 +88,6 @@ function App() {
           </div>
         ))}
       </ul>
-      <div className="flex mt-4 space-x-4">
-        <button
-          className="p-2 bg-green-600 hover:bg-green-700 text-white rounded focus:outline-none focus:ring-2 focus:ring-green-500"
-          onClick={handleSaveTasks}
-        >
-          Save Tasks
-        </button>
-        <input
-          type="file"
-          accept=".txt"
-          className="hidden"
-          id="load-tasks"
-          onChange={handleLoadTasks}
-        />
-        <label
-          htmlFor="load-tasks"
-          className="p-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-500"
-        >
-          Load Tasks
-        </label>
-      </div>
     </div>
   );
 }
