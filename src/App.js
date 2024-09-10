@@ -5,10 +5,10 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 
 function App() {
-  const [task, setTask] = useState(""); // bieżący task 
-  const [taskList, setTaskList] = useState([]); // lista tasków 
-  const [selectedDate, setSelectedDate] = useState(new Date()); // wybrana data
-  const [tasksByDate, setTasksByDate] = useState({}); // zadania przypisane do dat
+  const [task, setTask] = useState(""); 
+  const [taskList, setTaskList] = useState([]); 
+  const [selectedDate, setSelectedDate] = useState(new Date()); 
+  const [tasksByDate, setTasksByDate] = useState({}); 
 
   const handletaskAdd = () => {
     const newTaskList = [...taskList, task];
