@@ -7,8 +7,9 @@ import 'react-calendar/dist/Calendar.css';
 function App() {
   const [task, setTask] = useState(""); // bieżący task 
   const [taskList, setTaskList] = useState([]); // lista tasków 
-  const [selectedDate, setSelectedDate] = useState(new Date()); 
-  const [tasksByDate, setTasksByDate] = useState({}); 
+  const [selectedDate, setSelectedDate] = useState(new Date()); // wybrana data
+  const [tasksByDate, setTasksByDate] = useState({}); // zadania przypisane do dat
+
   const handletaskAdd = () => {
     const newTaskList = [...taskList, task];
     setTaskList(newTaskList);
@@ -25,8 +26,9 @@ function App() {
   };
 
   const handleSaveTasks = () => {
-    const blob = new Blob([taskList.join('\n')], { type: 'text/plain;charset=utf-8' });
-    saveAs(blob, 'taskList.txt');
+    const tasksData = JSON.stringify(tasksByDate, null, 2);
+    const blob = new Blob([tasksData], { type: 'application/json;charset=utf-8' });
+    saveAs(blob, 'tasksByDate.json');
   };
 
   const handleLoadTasks = (event) => {
@@ -35,8 +37,8 @@ function App() {
       const reader = new FileReader();
       reader.onload = (e) => {
         const contents = e.target.result;
-        const loadedTasks = contents.split('\n').filter(task => task.trim() !== "");
-        setTaskList(loadedTasks);
+        const loadedTasksByDate = JSON.parse(contents);
+        setTasksByDate(loadedTasksByDate);
       };
       reader.readAsText(file);
     }
@@ -52,7 +54,6 @@ function App() {
           value={task}
           name='task'
           type='text'
-          text="enter"
           placeholder='Enter a task'
         />
         <button
@@ -87,8 +88,29 @@ function App() {
           </div>
         ))}
       </ul>
+      <div className="flex mt-4 space-x-4">
+        <button
+          className="p-2 bg-green-600 hover:bg-green-700 text-white rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+          onClick={handleSaveTasks}
+        >
+          Save Tasks
+        </button>
+        <input
+          type="file"
+          accept=".json"
+          className="hidden"
+          id="load-tasks"
+          onChange={handleLoadTasks}
+        />
+        <label
+          htmlFor="load-tasks"
+          className="p-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-500"
+        >
+          Load Tasks
+        </label>
+      </div>
     </div>
   );
 }
- 
+
 export default App;
